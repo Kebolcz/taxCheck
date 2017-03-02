@@ -1,0 +1,14 @@
+D:\接口项目\WebApplication1\WebApplication1\bin\Casco.Invoice.dll
+D:\接口项目\WebApplication1\WebApplication1\bin\Casco.Invoice.pdb
+D:\接口项目\WebApplication1\WebApplication1\obj\Debug\Casco.Invoice.dll
+D:\接口项目\WebApplication1\WebApplication1\obj\Debug\Casco.Invoice.pdb
+D:\接口项目\WebApplication1\Casco.Invoice\bin\Casco.Invoice.dll
+D:\接口项目\WebApplication1\Casco.Invoice\bin\Casco.Invoice.pdb
+D:\接口项目\WebApplication1\Casco.Invoice\obj\Debug\Casco.Invoice.dll
+D:\接口项目\WebApplication1\Casco.Invoice\obj\Debug\Casco.Invoice.pdb
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\bin\Casco.Invoice.dll.config
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\bin\Casco.Invoice.dll
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\bin\Casco.Invoice.pdb
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.dll
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.pdb
+D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.csprojResolveAssemblyReference.cache

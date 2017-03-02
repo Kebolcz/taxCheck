@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="taxCheck" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\DEMO示例各种示例---BIG\ DEMO\\tax\\Casco\.Invoice\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^D:\\DEMO示例各种示例---BIG\ DEMO\\tax\\Casco\.Invoice\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="CascoInvoiceConnectionString-Web.config Connection String" description="" value="Data Source=172.19.100.123;Initial Catalog=CascoInvoice;Persist Security Info=True;User ID=sa;Password=p@ssw0rd" tags="">
+    <parameterEntry kind="XmlFile" scope="D:\\DEMO示例各种示例---BIG\ DEMO\\tax\\Casco\.Invoice\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CascoInvoiceConnectionString']/@connectionString" />
+  </parameter>
+</parameters>

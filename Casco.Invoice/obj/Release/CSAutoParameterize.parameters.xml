@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="CascoInvoiceConnectionString-Web.config Connection String" description="CascoInvoiceConnectionString 由应用程序在 web.config 中用来访问数据库的连接字符串。" defaultValue="Data Source=172.19.100.123;Initial Catalog=CascoInvoice;User ID=sa;Password=p@ssw0rd" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\DEMO示例各种示例---BIG\ DEMO\\tax\\Casco\.Invoice\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CascoInvoiceConnectionString']/@connectionString" />
+  </parameter>
+</parameters>
