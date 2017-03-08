@@ -19,6 +19,12 @@ namespace Casco.Invoice
         /// </summary>
         public string InvoiceProvince { get; set; }
 
+        private string djsys;
+        /// <summary>
+        /// 单据号
+        /// </summary>
+        public string Djsys { get; set; }
+
         private string invoiceCode;
         /// <summary>
         /// 发票代码

@@ -6,6 +6,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>发票查验记录</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" />
     <script charset='utf-8' type='text/javascript' src="Scripts/jquery.min.js"></script>
     <script charset='utf-8' type='text/javascript' src="Scripts/bootstrap.min.js"></script>
     <script charset='utf-8' type='text/javascript' src="Scripts/bootstrap-datetimepicker.min.js"></script>
@@ -34,6 +35,43 @@
                 color: #CDDC39 !important;
                 text-decoration: none !important;
             }
+
+        .hide {
+            display: none;
+        }
+
+        #GridView1 th {
+            vertical-align: middle;
+        }
+
+        #GridView1 td {
+            vertical-align: middle;
+        }
+
+        table td a {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+        }
     </style>
 </head>
 <body>
@@ -45,9 +83,9 @@
                     <div class="logo" style="background: url(../images/logo.png) no-repeat left center; padding-left: 170px">
                         增值税发票查验平台
                     </div>
-                <span id="Hotnews" style="left: 170px">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）在线查验</span>
-                <span style="left: 170px;display:none;">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）、机动车销售统一发票、货物运输业增值税专用发票在线查验</span>
-            </div>
+                    <span id="Hotnews" style="left: 170px">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）在线查验</span>
+                    <span style="left: 170px; display: none;">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）、机动车销售统一发票、货物运输业增值税专用发票在线查验</span>
+                </div>
             </div>
             <!--header end-->
         </div>
@@ -73,19 +111,26 @@
         <div class="container" id="grid" style="margin-top: 50px;">
 
             <%--<div>--%>
-            <asp:GridView ID="GridView1" runat="server" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" PageSize="15" CssClass="table table-condensed table-bordered" AutoGenerateColumns="False" CellPadding="4" EnableModelValidation="True" ForeColor="#333333" GridLines="None">
+            <asp:GridView ID="GridView1" runat="server" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" CssClass="table table-condensed table-bordered" AutoGenerateColumns="False" CellPadding="4" EnableModelValidation="True" ForeColor="#333333" GridLines="None" OnRowDeleting="GridView1_RowDeleting" OnRowDataBound="GridView1_RowDataBound">
                 <AlternatingRowStyle BackColor="White" />
                 <Columns>
+                    <asp:BoundField HeaderText="编号" ReadOnly="True" />
                     <asp:BoundField DataField="InvoiceType" HeaderText="发票类型" />
                     <asp:BoundField DataField="InvoiceCode" HeaderText="发票代码" />
                     <asp:BoundField DataField="InvoiceNumber" HeaderText="发票号码" />
+                    <asp:BoundField DataField="Djsys" HeaderText="业务单号" />
                     <asp:BoundField DataField="InvoiceDate" HeaderText="开票日期" />
+                    <asp:BoundField DataField="GIdentificationCode" HeaderText="购买方识别号"><HeaderStyle CssClass="hide" /><ItemStyle  CssClass="hide" /><FooterStyle CssClass="hide" /></asp:BoundField>
+                    <asp:BoundField DataField="GName" HeaderText="购买方名称"><HeaderStyle CssClass="hide" /><ItemStyle  CssClass="hide" /><FooterStyle CssClass="hide" /></asp:BoundField>
+                    <asp:BoundField DataField="XIdentificationCode" HeaderText="销售方识别号"><HeaderStyle CssClass="hide" /><ItemStyle  CssClass="hide" /><FooterStyle CssClass="hide" /></asp:BoundField>
                     <asp:BoundField DataField="XName" HeaderText="销售方名称" />
                     <asp:BoundField DataField="TotalPriceS" HeaderText="价税合计" />
                     <asp:BoundField DataField="Total" HeaderText="金额(不含税)" />
                     <asp:BoundField DataField="TotalTax" HeaderText="税额" />
                     <asp:BoundField DataField="OperatorID" HeaderText="操作人ID" />
                     <asp:BoundField DataField="InspectionTime" HeaderText="操作日期" />
+                    <asp:BoundField DataField="Disabled" HeaderText="删除Flag" />
+                    <asp:ButtonField CommandName="Delete" HeaderText="操作" ShowHeader="True" Text="删除" />
                 </Columns>
                 <PagerTemplate>
                     当前第:
@@ -117,6 +162,29 @@
                 <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle BackColor="#EFF3FB" />
                 <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+            </asp:GridView>
+
+            <asp:GridView ID="GridView2" runat="server" CssClass="hide table table-condensed table-bordered" AutoGenerateColumns="False" CellPadding="3" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" EnableModelValidation="True" OnRowDataBound="GridView2_RowDataBound">
+                <Columns>
+                    <asp:BoundField HeaderText="编号" ReadOnly="True" />
+                    <asp:BoundField DataField="InvoiceType" HeaderText="发票类型" />
+                    <asp:BoundField DataField="InvoiceCode" HeaderText="发票代码" />
+                    <asp:BoundField DataField="InvoiceNumber" HeaderText="发票号码" />
+                    <asp:BoundField DataField="GoodsName" HeaderText="类目名称" />
+                    <asp:BoundField DataField="SpecificationModel" HeaderText="类目规格" />
+                    <asp:BoundField DataField="Unit" HeaderText="单位" />
+                    <asp:BoundField DataField="Quantity" HeaderText="数量" />
+                    <asp:BoundField DataField="UnitPrice" HeaderText="单价" />
+                    <asp:BoundField DataField="Money" HeaderText="金额" />
+                    <asp:BoundField DataField="TaxRate" HeaderText="税率" />
+                    <asp:BoundField DataField="Tax" HeaderText="税额" />
+                    <asp:BoundField DataField="Disabled" HeaderText="删除Flag" />
+                </Columns>
+                <FooterStyle BackColor="White" ForeColor="#000066" />
+                <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+                <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
+                <RowStyle ForeColor="#000066" />
+                <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
             </asp:GridView>
             <%--</div>--%>
             <%--<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" EnableModelValidation="True" Height="169px" Width="707px">
@@ -162,25 +230,54 @@
     <script charset="utf-8" type="text/javascript">
         function nowDate() {
             //若要显示:当前日期加时间(如:2009-06-12 12:00)
-                var now = new Date();
-                var year = now.getFullYear();
-                //年
-                var month = now.getMonth() + 1;
-                //月
-                var day = now.getDate();
-                //日
-                var clock = year + '-';
-                if (month < 10) {
-                    clock += "0";
-                }
-                clock += month + '-';
+            var now = new Date();
+            var year = now.getFullYear();
+            //年
+            var month = now.getMonth() + 1;
+            //月
+            var day = now.getDate();
+            //日
+            var clock = year + '-';
+            if (month < 10) {
+                clock += "0";
+            }
+            clock += month + '-';
 
-                if (day < 10) {
-                    clock += "0";
-                }
-                clock += day;
+            if (day < 10) {
+                clock += "0";
+            }
+            clock += day;
 
-                return clock;
+            return clock;
+        }
+
+        /*
+         * 自动填充当前月的第一天和最后一天
+         */
+        var date_ = new Date();
+        var firstdate = "";
+        var year_ = date_.getFullYear();
+        firstdate += year_ + '-';
+        var month_ = date_.getMonth() + 1;
+        if (month_ < 10) {
+            firstdate += "0";
+        }
+        firstdate += month_;
+        firstdate += '-01';
+        var day = new Date(year_, month_, 0);
+        //var lastdate = year_ + '-' + month_ + '-' + day.getDate();
+        var lastdate = "";
+        lastdate += year_ + '-';
+        if (month_ < 10) {
+            lastdate += "0";
+        }
+        lastdate += month_ + '-' + day.getDate();
+
+        //初次加载时,查询日期赋值当月第一天和最后一天
+        var IsPostBack = "<%=IsPostBack%>";
+        if (IsPostBack == "False") {
+            $("#startDate").val(firstdate);
+            $("#endDate").val(lastdate);
         }
 
         $("#startDate").datetimepicker({

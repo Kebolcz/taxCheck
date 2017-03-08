@@ -22,6 +22,10 @@ namespace Casco.Invoice
                 {
                     info.InvoiceProvince = Request.Form["pData[InvoiceProvince]"];
                 }
+                if (Request.Form["pData[djsys]"] != null)
+                {
+                    info.Djsys = Request.Form["pData[djsys]"];
+                }
                 if (Request.Form["pData[InvoiceType]"] != null)
                 {
                     info.InvoiceType = Request.Form["pData[InvoiceType]"];

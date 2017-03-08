@@ -12,3 +12,9 @@ D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\bin\Casco.Invoice.pdb
 D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.dll
 D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.pdb
 D:\DEMO示例各种示例---BIG DEMO\tax\Casco.Invoice\obj\Debug\Casco.Invoice.csprojResolveAssemblyReference.cache
+E:\GitHub\taxCheck\Casco.Invoice\bin\Casco.Invoice.dll.config
+E:\GitHub\taxCheck\Casco.Invoice\bin\Casco.Invoice.dll
+E:\GitHub\taxCheck\Casco.Invoice\bin\Casco.Invoice.pdb
+E:\GitHub\taxCheck\Casco.Invoice\obj\Debug\Casco.Invoice.dll
+E:\GitHub\taxCheck\Casco.Invoice\obj\Debug\Casco.Invoice.pdb
+E:\GitHub\taxCheck\Casco.Invoice\obj\Debug\Casco.Invoice.csprojResolveAssemblyReference.cache

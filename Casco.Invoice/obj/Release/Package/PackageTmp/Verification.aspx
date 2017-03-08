@@ -12,6 +12,7 @@
     <meta http-equiv="expires" content="0">
     <meta name="format-detection" content="telephone=no">
     <meta property="wb:webmaster" content="" />
+    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" />
     <script language="javascript">
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/common.css?" + Math.random() + "' />");
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/jquery.alerts.css?" + Math.random() + "' media='screen' />");
@@ -32,8 +33,8 @@
         document.write("<s" + "cript charset='utf-8' type='text/javascript' src='https://inv-veri.chinatax.gov.cn/js/validate.js?" + Math.random() + "'></scr" + "ipt>");
         document.write("<s" + "cript charset='utf-8' type='text/javascript' src='https://inv-veri.chinatax.gov.cn/js/result.js?" + Math.random() + "'></scr" + "ipt>");
         document.write("<s" + "cript type='text/javascript' language='javascript' src='https://inv-veri.chinatax.gov.cn/js/bootstrap-datepicker.js'></scr" + "ipt>");
-        document.write("<s" + "cript type='text/javascript' language='javascript' src='https://inv-veri.chinatax.gov.cn/js/bootstrap-datepicker.zh-CN.min.js'></scr" + "ipt>"); 
-  
+        document.write("<s" + "cript type='text/javascript' language='javascript' src='https://inv-veri.chinatax.gov.cn/js/bootstrap-datepicker.zh-CN.min.js'></scr" + "ipt>");
+
     </script>
     <script>
         var browser = "";
@@ -47,7 +48,7 @@
             return num;
         }
 
-        var jsname = ""; 
+        var jsname = "";
     </script>
 </head>
 <body onload="arw();">
@@ -55,11 +56,11 @@
         <!--header begin-->
         <div id="headerbox">
             <div id="header">
-                <div class="logo" style="background: url(../images/logo.png) no-repeat left center;
-                    padding-left: 170px">
-                    增值税发票查验平台</div>
+                <div class="logo" style="background: url(../images/logo.png) no-repeat left center; padding-left: 170px">
+                    增值税发票查验平台
+                </div>
                 <span id="Hotnews" style="left: 170px">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）在线查验</span>
-                <span style="left: 170px;display:none;">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）、机动车销售统一发票、货物运输业增值税专用发票在线查验</span>
+                <span style="left: 170px; display: none;">支持增值税专用发票、增值税普通发票（含电子普通发票、卷式发票）、机动车销售统一发票、货物运输业增值税专用发票在线查验</span>
             </div>
         </div>
         <!--header end-->
@@ -87,15 +88,27 @@
         <!--左侧-->
         <table border="0" class="comm_table2 fr" style="float: right;">
             <tr>
-                <td class="align_right2" style="font-weight: bold">
-                    扫一扫：
+                <td class="align_right2" style="font-weight: bold">发票二维码:
                 </td>
                 <td width="600">
-                    <input type="text" name="fpsys"  id="fpsys" maxlength="1200"  style="width: 540px" />
+                    <input type="text" name="fpsys" id="fpsys" maxlength="1200" style="width: 540px" />
                 </td>
                 <td width="400">
                     <div id="Div1" class="tip_common">
-                        请扫描发票二维码</div>
+                        请扫描发票二维码
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align_right2" style="font-weight: bold">业务单号:
+                </td>
+                <td width="600">
+                    <input type="text" name="djsys" id="djsys" maxlength="1200" style="width: 540px" />
+                </td>
+                <td width="400">
+                    <div id="Div1" class="tip_common">
+                        请扫描业务单号
+                    </div>
                 </td>
             </tr>
         </table>
@@ -110,7 +123,8 @@
                 </td>
                 <td width="200">
                     <div id="fpdmjy" class="tip_common">
-                        请输入发票代码</div>
+                        请输入发票代码
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -122,7 +136,8 @@
                 </td>
                 <td>
                     <div id="fphmjy" class="tip_common">
-                        请输入发票号码</div>
+                        请输入发票号码
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -137,7 +152,8 @@
                 </td>
                 <td>
                     <div id="kprqjy" class="tip_common">
-                        请输入开票日期</div>
+                        请输入开票日期
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -149,7 +165,8 @@
                 </td>
                 <td>
                     <div id="kjjejy" class="tip_common">
-                        请输入开具金额</div>
+                        请输入开具金额
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -160,33 +177,28 @@
                     <input type="text" style="color: #999999" value="请输入验证码" id="yzm" autocomplete="off" />
                     <!--<span class="con_img" id="imgarea"><a href="#"><input type="button" value="获取验证码" id="yzm_img" /></a></span> code.png -->
                 </td>
-                <td id="yzminfo" style="font-size: 14px;">
-                    &nbsp;
+                <td id="yzminfo" style="font-size: 14px;">&nbsp;
                 </td>
                 <!-- <td><div id="yzmjy"class="tip_common">请输入验证码</div></td> -->
             </tr>
             <tr>
-                <td>
-                    &nbsp;
+                <td>&nbsp;
                 </td>
                 <td id="imgarea">
                     <div>
                         <a href="javascript:void(0);">
-                            <img width="220" height="120" src="images/code.png" id="yzm_img" style="cursor: pointer;
-                                vertical-align: top;" />
-                            <img width="220" height="120" src="images/code.png" id="yzm_unuse_img" style="cursor: pointer;
-                                vertical-align: top; display: none;" /></a><div style="float: right; margin-right: 20px;
-                                    margin-top: 10px;">
-                                    <span class="tip_yzm">点击图片刷新</span></div>
+                            <img width="220" height="120" src="images/code.png" id="yzm_img" style="cursor: pointer; vertical-align: top;" />
+                            <img width="220" height="120" src="images/code.png" id="yzm_unuse_img" style="cursor: pointer; vertical-align: top; display: none;" /></a><div style="float: right; margin-right: 20px; margin-top: 10px;">
+                                <span class="tip_yzm">点击图片刷新</span>
+                        </div>
                     </div>
                 </td>
-                <td>
-                    &nbsp;
+                <td>&nbsp;
                 </td>
             </tr>
             <tr>
                 <td colspan="3">
-                    <div class="clearfix" style="margin: 0px 0px 0px -180px;text-align: center;">
+                    <div class="clearfix" style="margin: 0px 0px 0px -180px; text-align: center;">
                         <button class="gray_button" style="cursor: default; display: none" id="uncheckfp"
                             disabled="true">
                             查 验</button>
@@ -200,7 +212,8 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="blue_button" onmousemove="this.className='green_button';" onmouseout="this.className='blue_button';"
                             id="watch">
-                            查 询</button></div>
+                            历史记录</button>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -333,16 +346,17 @@
                 $("#kprq").val(strs[5]);
                 $("#kprq").keyup();
                 $("#kprq").blur();
-                $("#kjje").val(strs[4]);
-                if (strs[1] == "04") {
+                if (strs[1] == "01") {
+                    $("#kjje").val(strs[4]);
+                } else {
                     $("#kjje").val(strs[6].slice(-6));
                 }
                 $("#kjje").keyup();
                 $("#kjje").blur();
                 getYzmXx();
-
+                $("#djsys").focus();
             }
-        })
+        });
 
 
         $("#fpdm").keyup(function () {
@@ -678,53 +692,102 @@
                 var hwinfo = hwxxs.split('≡');
                 var hw;
                 var html = "";
+
+                /*
+                 * 当发票是电子发票时,购买方和销售方的信息与专票和普票的信息位置是相反的
+                 */
+                var BuyerName = fpxx[5],
+                    BuyerIdentificationCode = fpxx[6],
+                    BuyerAddressPhone = fpxx[7],
+                    BuyerBankAccount = fpxx[8],
+                    SalerName = fpxx[9],
+                    SalerIdentificationCode = FormatSBH(fpxx[10], rules[1]),
+                    SalerAddressPhone = fpxx[11],
+                    SalerBankAccount = fpxx[12],
+                    YZCode = fpxx[19];
+                if (fplx == '04' || fplx == '10') {
+                    SalerName = fpxx[5];
+                    SalerIdentificationCode = FormatSBH(fpxx[6], rules[1]);
+                    SalerAddressPhone = fpxx[7];
+                    SalerBankAccount = fpxx[8];
+                    BuyerName = fpxx[9];
+                    BuyerIdentificationCode = fpxx[10];
+                    BuyerAddressPhone = fpxx[11];
+                    BuyerBankAccount = fpxx[12];
+                    YZCode = fpxx[13];
+                }
+
                 for (var i = 0; i < hwinfo.length; i++) {
                     hw = hwinfo[i].split('█');
                     var InvoiceSubInfo = new Object();
                     InvoiceSubInfo.InvoiceCode = fpxx[0];
                     InvoiceSubInfo.InvoiceNumber = fpxx[1];
-                    InvoiceSubInfo.CheckCode = fpxx[19];
+                    InvoiceSubInfo.CheckCode = YZCode;
                     InvoiceSubInfo.MachineNumber = fpxx[17];
                     InvoiceSubInfo.NO = "";
                     InvoiceSubInfo.GoodsName = FormatHwmc(hw[0], rules[4]);
                     InvoiceSubInfo.SpecificationModel = hw[1];
                     InvoiceSubInfo.Unit = hw[2];
                     InvoiceSubInfo.Quantity = getzeroDot(hw[3]);
+                    if(fplx=="10"){
+                        InvoiceSubInfo.Quantity = getzeroDot(hw[6]);
+                    }
                     InvoiceSubInfo.UnitPrice = GetJeToDot(hw[4].trim());
                     InvoiceSubInfo.Money = GetJeToDot(hw[5].trim());
                     InvoiceSubInfo.TaxRate = FormatSl(hw[6]);
+                    if (fplx == "10") {
+                        InvoiceSubInfo.TaxRate = FormatSl(hw[3]);
+                    }
                     InvoiceSubInfo.Tax = GetJeToDot(hw[7].trim());
-                    InvoiceSubInfo.Total = '￥' + GetJeToDot(getje(fpxx[13], rules[2]));
-                    InvoiceSubInfo.TotalTax = '￥' + GetJeToDot(getje(fpxx[14], rules[2]));
+                    if (fplx == "01") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[13], rules[2]));
+                    } else if (fplx == "04") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[19], rules[2]));
+                    } else if (fplx == "10") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[18], rules[2]));
+                    } else {
+                        InvoiceSubInfo.Total = '13693069798';
+                    }
+                    InvoiceSubInfo.TotalTax = GetJeToDot(getje(fpxx[14], rules[2]));
                     InvoiceSubInfos.push(InvoiceSubInfo);
                 }
+
+                var checkTime = "";
+
+                if (fplx == '10') {
+                    checkTime = fpxx[20];
+                } else {
+                    checkTime = fpxx[21];
+                }
+
                 var postData = {
                     InvoiceProvince: fpxx[2],
+                    djsys: $("#djsys").val(),
                     InvoiceType: fplx,  //发票类型
                     InvoiceCode: fpxx[0],  //发票代码
                     InvoiceNumber: fpxx[1], //发票号码
                     InvoiceDate: FormatDate(fpxx[4], rules[3]),
-                    CheckCode: fpxx[19],
+                    CheckCode: YZCode,
                     MachineNumber: fpxx[17],
-                    GName: fpxx[5],
-                    GIdentificationCode: fpxx[6],
-                    GAddressPhone: fpxx[7],
-                    GBankAccount: fpxx[8],
+                    GName: BuyerName,
+                    GIdentificationCode: BuyerIdentificationCode,
+                    GAddressPhone: BuyerAddressPhone,
+                    GBankAccount: BuyerBankAccount,
                     PasswordArea: "",
                     TotalPriceB: NoToChinese(GetJeToDot(getje(fpxx[15], rules[2])), "01"),
                     TotalPriceS: GetJeToDot(getje(fpxx[15], rules[2])),
-                    XName: fpxx[9],
-                    XIdentificationCode: FormatSBH(fpxx[10], rules[1]),
-                    XAddressPhone: fpxx[11],
-                    XBankAccount: fpxx[12],
+                    XName: SalerName,
+                    XIdentificationCode: SalerIdentificationCode,
+                    XAddressPhone: SalerAddressPhone,
+                    XBankAccount: SalerBankAccount,
                     InspectionTimes: cycs,  //查验次数
-                    InspectionTime: fpxx[21], //查验时间
+                    InspectionTime: checkTime, //查验时间
                     Remark: data.jmbz.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>"),
                     InvoiceSubInfo: InvoiceSubInfos
                 };
                 $.ajax({
                     type: "POST",
-                    url: "Verification.aspx",
+                    url: "Verification.aspx?r="+Math.random(),
                     timeout: 900000, //超时时间设置，单位毫秒
                     //contentType: "application/json", //这个一定要加上哟！
                     dataType: "text",
@@ -872,6 +935,7 @@
                                         $.getScript("https://inv-veri.chinatax.gov.cn/js/" + jsname,
                                 function () { //加载,并执行回调函数 
                                     sessionStorage["rule"] = rule;
+                                    bb(result);
                                     //window.showModalDialog('cyjg' + fplx + '.html', result, "dialogTop:10px;dialogWidth:1100px;dialogHeight:700px;");
                                 });
                                     }
@@ -1056,7 +1120,7 @@
                         divFadeAlert("网络超时，请重试！(01)", "2");
                         //jAlert("网络超时，请重试！(01)", "警告");
                     } else if (key1 == "fpdmerr") {
-                        divFadeAlert("请输入合法发票代码","2");
+                        divFadeAlert("请输入合法发票代码", "2");
                         //jAlert("请输入合法发票代码!", "警告");
                     } else if (key1 == "024") {
                         jAlert("24小时内验证码请求太频繁，请稍后再试！", "警告");
@@ -1180,6 +1244,7 @@
             $("#kprq").val('');
             $("#kjje").val('');
             $("#fpsys").val('');
+            $("#djsys").val('');
             $("#yzm").val('');
             $("#fpsys").focus();
         }

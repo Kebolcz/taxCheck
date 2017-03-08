@@ -12,6 +12,7 @@
     <meta http-equiv="expires" content="0">
     <meta name="format-detection" content="telephone=no">
     <meta property="wb:webmaster" content="" />
+    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" />
     <script language="javascript">
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/common.css?" + Math.random() + "' />");
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/jquery.alerts.css?" + Math.random() + "' media='screen' />");
@@ -87,7 +88,7 @@
         <!--左侧-->
         <table border="0" class="comm_table2 fr" style="float: right;">
             <tr>
-                <td class="align_right2" style="font-weight: bold">扫一扫：
+                <td class="align_right2" style="font-weight: bold">发票二维码:
                 </td>
                 <td width="600">
                     <input type="text" name="fpsys" id="fpsys" maxlength="1200" style="width: 540px" />
@@ -95,6 +96,18 @@
                 <td width="400">
                     <div id="Div1" class="tip_common">
                         请扫描发票二维码
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="align_right2" style="font-weight: bold">业务单号:
+                </td>
+                <td width="600">
+                    <input type="text" name="djsys" id="djsys" maxlength="1200" style="width: 540px" />
+                </td>
+                <td width="400">
+                    <div id="Div1" class="tip_common">
+                        请扫描业务单号
                     </div>
                 </td>
             </tr>
@@ -333,16 +346,17 @@
                 $("#kprq").val(strs[5]);
                 $("#kprq").keyup();
                 $("#kprq").blur();
-                $("#kjje").val(strs[4]);
-                if (strs[1] == "04") {
+                if (strs[1] == "01") {
+                    $("#kjje").val(strs[4]);
+                } else {
                     $("#kjje").val(strs[6].slice(-6));
                 }
                 $("#kjje").keyup();
                 $("#kjje").blur();
                 getYzmXx();
-
+                $("#djsys").focus();
             }
-        })
+        });
 
 
         $("#fpdm").keyup(function () {
@@ -678,53 +692,102 @@
                 var hwinfo = hwxxs.split('≡');
                 var hw;
                 var html = "";
+
+                /*
+                 * 当发票是电子发票时,购买方和销售方的信息与专票和普票的信息位置是相反的
+                 */
+                var BuyerName = fpxx[5],
+                    BuyerIdentificationCode = fpxx[6],
+                    BuyerAddressPhone = fpxx[7],
+                    BuyerBankAccount = fpxx[8],
+                    SalerName = fpxx[9],
+                    SalerIdentificationCode = FormatSBH(fpxx[10], rules[1]),
+                    SalerAddressPhone = fpxx[11],
+                    SalerBankAccount = fpxx[12],
+                    YZCode = fpxx[19];
+                if (fplx == '04' || fplx == '10') {
+                    SalerName = fpxx[5];
+                    SalerIdentificationCode = FormatSBH(fpxx[6], rules[1]);
+                    SalerAddressPhone = fpxx[7];
+                    SalerBankAccount = fpxx[8];
+                    BuyerName = fpxx[9];
+                    BuyerIdentificationCode = fpxx[10];
+                    BuyerAddressPhone = fpxx[11];
+                    BuyerBankAccount = fpxx[12];
+                    YZCode = fpxx[13];
+                }
+
                 for (var i = 0; i < hwinfo.length; i++) {
                     hw = hwinfo[i].split('█');
                     var InvoiceSubInfo = new Object();
                     InvoiceSubInfo.InvoiceCode = fpxx[0];
                     InvoiceSubInfo.InvoiceNumber = fpxx[1];
-                    InvoiceSubInfo.CheckCode = fpxx[19];
+                    InvoiceSubInfo.CheckCode = YZCode;
                     InvoiceSubInfo.MachineNumber = fpxx[17];
                     InvoiceSubInfo.NO = "";
                     InvoiceSubInfo.GoodsName = FormatHwmc(hw[0], rules[4]);
                     InvoiceSubInfo.SpecificationModel = hw[1];
                     InvoiceSubInfo.Unit = hw[2];
                     InvoiceSubInfo.Quantity = getzeroDot(hw[3]);
+                    if(fplx=="10"){
+                        InvoiceSubInfo.Quantity = getzeroDot(hw[6]);
+                    }
                     InvoiceSubInfo.UnitPrice = GetJeToDot(hw[4].trim());
                     InvoiceSubInfo.Money = GetJeToDot(hw[5].trim());
                     InvoiceSubInfo.TaxRate = FormatSl(hw[6]);
+                    if (fplx == "10") {
+                        InvoiceSubInfo.TaxRate = FormatSl(hw[3]);
+                    }
                     InvoiceSubInfo.Tax = GetJeToDot(hw[7].trim());
-                    InvoiceSubInfo.Total = '￥' + GetJeToDot(getje(fpxx[13], rules[2]));
-                    InvoiceSubInfo.TotalTax = '￥' + GetJeToDot(getje(fpxx[14], rules[2]));
+                    if (fplx == "01") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[13], rules[2]));
+                    } else if (fplx == "04") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[19], rules[2]));
+                    } else if (fplx == "10") {
+                        InvoiceSubInfo.Total = GetJeToDot(getje(fpxx[18], rules[2]));
+                    } else {
+                        InvoiceSubInfo.Total = '13693069798';
+                    }
+                    InvoiceSubInfo.TotalTax = GetJeToDot(getje(fpxx[14], rules[2]));
                     InvoiceSubInfos.push(InvoiceSubInfo);
                 }
+
+                var checkTime = "";
+
+                if (fplx == '10') {
+                    checkTime = fpxx[20];
+                } else {
+                    checkTime = fpxx[21];
+                }
+
                 var postData = {
                     InvoiceProvince: fpxx[2],
+                    djsys: $("#djsys").val(),
                     InvoiceType: fplx,  //发票类型
                     InvoiceCode: fpxx[0],  //发票代码
                     InvoiceNumber: fpxx[1], //发票号码
                     InvoiceDate: FormatDate(fpxx[4], rules[3]),
-                    CheckCode: fpxx[19],
+                    CheckCode: YZCode,
                     MachineNumber: fpxx[17],
-                    GName: fpxx[5],
-                    GIdentificationCode: fpxx[6],
-                    GAddressPhone: fpxx[7],
-                    GBankAccount: fpxx[8],
+                    GName: BuyerName,
+                    GIdentificationCode: BuyerIdentificationCode,
+                    GAddressPhone: BuyerAddressPhone,
+                    GBankAccount: BuyerBankAccount,
                     PasswordArea: "",
                     TotalPriceB: NoToChinese(GetJeToDot(getje(fpxx[15], rules[2])), "01"),
                     TotalPriceS: GetJeToDot(getje(fpxx[15], rules[2])),
-                    XName: fpxx[9],
-                    XIdentificationCode: FormatSBH(fpxx[10], rules[1]),
-                    XAddressPhone: fpxx[11],
-                    XBankAccount: fpxx[12],
+                    XName: SalerName,
+                    XIdentificationCode: SalerIdentificationCode,
+                    XAddressPhone: SalerAddressPhone,
+                    XBankAccount: SalerBankAccount,
                     InspectionTimes: cycs,  //查验次数
-                    InspectionTime: fpxx[21], //查验时间
+                    InspectionTime: checkTime, //查验时间
                     Remark: data.jmbz.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>"),
                     InvoiceSubInfo: InvoiceSubInfos
                 };
                 $.ajax({
                     type: "POST",
-                    url: "Verification.aspx",
+                    url: "Verification.aspx?r="+Math.random(),
                     timeout: 900000, //超时时间设置，单位毫秒
                     //contentType: "application/json", //这个一定要加上哟！
                     dataType: "text",
@@ -1181,6 +1244,7 @@
             $("#kprq").val('');
             $("#kjje").val('');
             $("#fpsys").val('');
+            $("#djsys").val('');
             $("#yzm").val('');
             $("#fpsys").focus();
         }

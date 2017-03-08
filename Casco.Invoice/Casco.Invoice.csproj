@@ -61,6 +61,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="images\logo.png" />
+    <Content Include="images\favicon.ico" />
     <Content Include="review.aspx" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.css" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
