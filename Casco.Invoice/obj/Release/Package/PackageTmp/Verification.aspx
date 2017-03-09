@@ -34,7 +34,6 @@
         document.write("<s" + "cript charset='utf-8' type='text/javascript' src='https://inv-veri.chinatax.gov.cn/js/result.js?" + Math.random() + "'></scr" + "ipt>");
         document.write("<s" + "cript type='text/javascript' language='javascript' src='https://inv-veri.chinatax.gov.cn/js/bootstrap-datepicker.js'></scr" + "ipt>");
         document.write("<s" + "cript type='text/javascript' language='javascript' src='https://inv-veri.chinatax.gov.cn/js/bootstrap-datepicker.zh-CN.min.js'></scr" + "ipt>");
-
     </script>
     <script>
         var browser = "";
@@ -50,8 +49,132 @@
 
         var jsname = "";
     </script>
+    <style>
+        #ajaxloader {
+            position: absolute;
+            top: 0px;
+            filter: alpha(opacity=60);
+            background-color: rgb(255, 255, 255);
+            z-index: 1002;
+            left: 0px;
+            opacity: 0.5;
+            -webkit-opacity: 0.5;
+            /*height: 750px;
+            width: 1280px;*/
+        }
+
+        #loading {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            left: 50%;
+            top: 50%;
+            margin: 0 0 0 -15px;
+            border: 8px solid #000;
+            border-right-color: transparent;
+            border-radius: 50%;
+            box-shadow: 0 0 25px 2px #a25555;
+            -webkit-animation: spin 1s linear infinite;
+            -moz-animation: spin 1s linear infinite;
+            -ms-animation: spin 1s linear infinite;
+            -o-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+            margin-top: -45px;
+            margin-left: -15px;
+        }
+
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                -webkit-transform: rotate(180deg);
+                opacity: 1;
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+
+        @-moz-keyframes spin {
+            from {
+                -moz-transform: rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                -moz-transform: rotate(180deg);
+                opacity: 1;
+            }
+
+            to {
+                -moz-transform: rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+
+        @-ms-keyframes spin {
+            from {
+                -ms-transform: rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                -ms-transform: rotate(180deg);
+                opacity: 1;
+            }
+
+            to {
+                -ms-transform: rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+
+        @-o-keyframes spin {
+            from {
+                -o-transform: rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                -o-transform: rotate(180deg);
+                opacity: 1;
+            }
+
+            to {
+                -o-transform: rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: rotate(180deg);
+                opacity: 1;
+            }
+
+            to {
+                transform: rotate(360deg);
+                opacity: 0.6;
+            }
+        }
+    </style>
 </head>
 <body onload="arw();">
+    <%--aJax请求mask遮罩--%>
+    <div id="ajaxloader" style="display: block;">
+        <div id="loading" style="border-right: 0px;display:none;"></div>
+    </div>
+
     <div id="top">
         <!--header begin-->
         <div id="headerbox">
@@ -232,6 +355,17 @@
     <div id="floatwin1">
     </div>
     <script language="javascript">
+
+        function showMask() {
+            $("#ajaxloader").css("height", $(document).height());
+            $("#ajaxloader").css("width", $(document).width());
+            $("#loading").show();
+        }
+        function hideMask() {
+            $("#ajaxloader").css("height", "0");
+            $("#ajaxloader").css("width", "0");
+            $("#loading").hide();
+        }
         /*
         if (browser == "error") {
         jAlert("建议使用IE8及以上版本浏览器，使用其它\r\n浏览器可能会导致显示异常。", "警告
@@ -817,6 +951,7 @@
                     Remark: data.jmbz.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>"),
                     InvoiceSubInfo: InvoiceSubInfos
                 };
+                showMask();
                 $.ajax({
                     type: "POST",
                     url: "taxOperateHandler.ashx?method=checkMethod",
@@ -826,6 +961,7 @@
                     cache: false,
                     data: { pData: postData },
                     success: function (jsondata) {
+                        hideMask();
                         var json = eval("(" + jsondata + ")");
                         if (json.success == 'true') {
                             clearInfo();
@@ -839,6 +975,7 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideMask();
                         clearInfo();
                         divFadeAlert('异常出错！', "2");
                         //jAlert('出错!', data);
@@ -866,6 +1003,7 @@
                     'kprq': kprq,
                     'operateTime': date
                 };
+                showMask();
                 $.ajax({
                     type: "POST",
                     url: "taxOperateHandler.ashx?method=matchMethod",
@@ -874,6 +1012,7 @@
                     dataType: "text",
                     data: { pData: matchInfo },
                     success: function (jsondata) {
+                        hideMask();
                         var json = eval("(" + jsondata + ")");
                         if (json.success == 'true') {
                             clearInfo();
@@ -887,6 +1026,7 @@
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        hideMask();
                         clearInfo();
                         divFadeAlert('异常出错！', "2");
                         //jAlert('出错!', data);
@@ -957,6 +1097,7 @@
                         showTime();
 
                         url = ip + "/query"; //省局外网包查验发票的地址
+                        showMask();
                         $.ajax({
                             type: "post",
                             url: url,
@@ -964,6 +1105,7 @@
                             data: param,
                             jsonp: "callback",
                             success: function (jsonData) {
+                                hideMask();
                                 delayFlag = "1";
                                 var cyjgdm = jsonData.key1;
 
@@ -1171,6 +1313,7 @@
 
             yzmFlag = 1;
 
+            showMask();
             $.ajax({
                 type: "post",
                 url: url,
@@ -1178,6 +1321,7 @@
                 dataType: "jsonp",
                 jsonp: "callback",
                 success: function (jsonData) {
+                    hideMask();
                     delayFlag = "1";
                     var key1 = jsonData.key1;
                     var key2 = jsonData.key2;
@@ -1241,6 +1385,7 @@
                 //3秒后超时    
                 timeout: 5000,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideMask();
                     if (retrycount == 9) {
                         //jAlert("根证书未安装或与" + swjginfo[0] + "国税\r\n服务器之间的网络异常。", "警告");
                     } else {

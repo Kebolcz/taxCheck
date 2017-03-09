@@ -66,11 +66,13 @@
     <Content Include="Scripts\bootstrap-datetimepicker.min.css" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\modal.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
