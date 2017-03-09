@@ -62,12 +62,15 @@
     <Content Include="Default.aspx" />
     <Content Include="images\logo.png" />
     <Content Include="images\favicon.ico" />
+    <Content Include="NoAuth.html" />
     <Content Include="review.aspx" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.css" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cube.css" />
+    <Content Include="Scripts\cube.js" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />

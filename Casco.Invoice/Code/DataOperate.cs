@@ -9,6 +9,25 @@ namespace Casco.Invoice
 {
     public class DataOperate
     {
+        /// <summary>
+        /// 检查登录人登录系统授权信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataSet JudgeHasAuth(String userId)
+        {
+            DataSet ds = null;
+            try
+            {
+                string strSql = "SELECT * FROM [CascoInvoice ].[dbo].[W_Authority] WHERE userId='" + userId + "'";
+                ds = Maticsoft.DBUtility.DbHelperSQL.Query(strSql);
+            }
+            catch (Exception)
+            {
+                ds = null;
+            }
+            return ds;
+        }
+
 
         /// <summary>
         /// 插入发票信息
