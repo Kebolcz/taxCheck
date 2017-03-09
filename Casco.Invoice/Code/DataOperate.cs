@@ -63,10 +63,10 @@ namespace Casco.Invoice
                  /// </summary>
                  /// <returns></returns>
 
-                string strSql = "SELECT DISTINCT a.InvoiceType,a.InvoiceCode,a.InvoiceNumber,a.Djsys,replace(replace(replace(a.InvoiceDate,'年','-'),'月','-'),'日','') as InvoiceDate,a.GIdentificationCode,a.GName,a.XIdentificationCode,a.XName,a.TotalPriceS,b.Total,b.TotalTax,a.OperatorID,a.InspectionTime, CASE a.Disabled WHEN 1 THEN '已删除' ELSE '' END AS Disabled " +
-                    "FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] a(nolock), [CascoInvoice ].[dbo].[B_InvoiceSubInfo] b WHERE a.InvoiceType like '%"
+                string strSql = "SELECT DISTINCT a.InvoiceType,a.InvoiceCode,a.InvoiceNumber,a.Djsys,replace(replace(replace(a.InvoiceDate,'年','-'),'月','-'),'日','') as InvoiceDate,a.GIdentificationCode,a.GName,a.XIdentificationCode,a.XName,a.TotalPriceS,b.Total,b.TotalTax,a.OperatorID,a.InspectionTime, CASE a.NotCheck WHEN 1 THEN '未校验' ELSE '' END AS IsChecked " +
+                    "FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] a(nolock) left join [CascoInvoice ].[dbo].[B_InvoiceSubInfo] b on a.InvoiceNumber = b.InvoiceNumber WHERE a.InvoiceType like '%"
                     + invoiceType + "%' and CONVERT(varchar(10),InspectionTime,111)>=CONVERT(varchar(10),'" + startDate + "',111) and CONVERT(varchar(10),InspectionTime,111)<= CONVERT(varchar(10), '" +
-                    endDate + "',111) and a.InvoiceNumber = b.InvoiceNumber and a.OperatorID = '" + operatorID + "' and a.Disabled is null and b.Disabled is null order by InspectionTime";
+                    endDate + "',111) and a.OperatorID = '" + operatorID + "' and a.Disabled is null order by InspectionTime";
 
                 ds = Maticsoft.DBUtility.DbHelperSQL.Query(strSql);
 
@@ -81,6 +81,7 @@ namespace Casco.Invoice
 
         /// <summary>
         /// 导出发票信息,使用到的方法
+        /// 未校验的发票不予导出.
         /// </summary>
         /// <returns></returns>
         public static DataSet exportInvoiceInfo(String invoiceType, String startDate, String endDate, String operatorID)
@@ -92,10 +93,10 @@ namespace Casco.Invoice
                  /// </summary>
                  /// <returns></returns>
 
-                string strSql = "SELECT DISTINCT a.InvoiceType,a.InvoiceCode,a.InvoiceNumber,a.Djsys,replace(replace(replace(a.InvoiceDate,'年','-'),'月','-'),'日','') as InvoiceDate,a.GIdentificationCode,a.GName,a.XIdentificationCode,a.XName,a.TotalPriceS,b.Total,b.TotalTax,a.OperatorID,a.InspectionTime, CASE a.Disabled WHEN 1 THEN '已删除' ELSE '' END AS Disabled " +
-                    "FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] a(nolock), [CascoInvoice ].[dbo].[B_InvoiceSubInfo] b WHERE a.InvoiceType like '%"
+                string strSql = "SELECT DISTINCT a.InvoiceType,a.InvoiceCode,a.InvoiceNumber,a.Djsys,replace(replace(replace(a.InvoiceDate,'年','-'),'月','-'),'日','') as InvoiceDate,a.GIdentificationCode,a.GName,a.XIdentificationCode,a.XName,a.TotalPriceS,b.Total,b.TotalTax,a.OperatorID,a.InspectionTime, CASE a.NotCheck WHEN 1 THEN '未校验' ELSE '' END AS IsChecked " +
+                    "FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] a(nolock) left join [CascoInvoice ].[dbo].[B_InvoiceSubInfo] b on a.InvoiceNumber = b.InvoiceNumber WHERE a.InvoiceType like '%"
                     + invoiceType + "%' and CONVERT(varchar(10),InspectionTime,111)>=CONVERT(varchar(10),'" + startDate + "',111) and CONVERT(varchar(10),InspectionTime,111)<= CONVERT(varchar(10), '" +
-                    endDate + "',111) and a.InvoiceNumber = b.InvoiceNumber and a.OperatorID = '" + operatorID + "' and a.Disabled is null and b.Disabled is null order by InspectionTime" + " SELECT c.InvoiceType,c.InvoiceCode,c.InvoiceNumber,d.GoodsName,d.SpecificationModel,d.Unit,d.Quantity,d.UnitPrice,d.[Money],d.[TaxRate],d.[Tax], CASE d.Disabled WHEN 1 THEN '已删除' ELSE '' END AS Disabled  FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] c(nolock) right join [CascoInvoice ].[dbo].[B_InvoiceSubInfo] d on c.InvoiceCode = d.InvoiceCode and c.InvoiceNumber = d.InvoiceNumber WHERE c.InvoiceType like '%"
+                    endDate + "',111) and a.OperatorID = '" + operatorID + "' and a.Disabled is null and a.NotCheck is null order by InspectionTime" + " SELECT c.InvoiceType,c.InvoiceCode,c.InvoiceNumber,d.GoodsName,d.SpecificationModel,d.Unit,d.Quantity,d.UnitPrice,d.[Money],d.[TaxRate],d.[Tax] FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] c(nolock) right join [CascoInvoice ].[dbo].[B_InvoiceSubInfo] d on c.InvoiceCode = d.InvoiceCode and c.InvoiceNumber = d.InvoiceNumber WHERE c.InvoiceType like '%"
                     + invoiceType + "%' and CONVERT(varchar(10),c.InspectionTime,111)>=CONVERT(varchar(10),'" + startDate + "',111) and CONVERT(varchar(10),c.InspectionTime,111)<= CONVERT(varchar(10), '" +
                     endDate + "',111) and c.OperatorID = '" + operatorID + "' and c.Disabled is null and d.Disabled is null";
 
@@ -152,6 +153,45 @@ namespace Casco.Invoice
                 ds = null;
             }
             return ds;
+        }
+
+
+        /// <summary>
+        /// 仅查重模式下,校验发票是否重复
+        /// </summary>
+        /// <returns></returns>
+        public static DataSet JudgeIsMatch(String code,String num,String date)
+        {
+            DataSet ds = null;
+            try
+            {
+                string strSql = "SELECT * FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] WHERE InvoiceCode='" + code + "' and InvoiceNumber='" + num + "' and Disabled is null";
+                ds = Maticsoft.DBUtility.DbHelperSQL.Query(strSql);
+            }
+            catch (Exception)
+            {
+                ds = null;
+            }
+            return ds;
+        }
+
+        /// <summary>
+        /// 仅查重模式下,插入数据库表B_InvoiceInfo该条记录,增加字段NotCheck
+        /// </summary>
+        /// <returns></returns>
+        public static int InsertOnlyMatch(String code, String num, String date, String operateTime, String operatorID)
+        {
+            int result = 0;
+            try
+            {
+                string strSql = "INSERT INTO B_InvoiceInfo([InvoiceType],[InvoiceCode],[InvoiceNumber],[InvoiceDate],[InspectionTime],[OperatorID],[NotCheck]) VALUES ('00','" + code + "','"+ num + "','" + date + "','" + operateTime + "','" + operatorID + "','1')";
+                result = Maticsoft.DBUtility.DbHelperSQL.ExecuteSql(strSql);
+            }
+            catch (Exception)
+            {
+                result = -1;
+            }
+            return result;
         }
 
         /// <summary>

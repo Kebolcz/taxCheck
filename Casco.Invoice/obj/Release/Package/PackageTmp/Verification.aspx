@@ -190,7 +190,7 @@
                             <img width="220" height="120" src="images/code.png" id="yzm_img" style="cursor: pointer; vertical-align: top;" />
                             <img width="220" height="120" src="images/code.png" id="yzm_unuse_img" style="cursor: pointer; vertical-align: top; display: none;" /></a><div style="float: right; margin-right: 20px; margin-top: 10px;">
                                 <span class="tip_yzm">点击图片刷新</span>
-                        </div>
+                            </div>
                     </div>
                 </td>
                 <td>&nbsp;
@@ -209,6 +209,10 @@
                         <button class="blue_button" onmousemove="this.className='green_button';" onmouseout="this.className='blue_button';"
                             id="reset">
                             重 置</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button class="red_button" onmousemove="this.className='green_button';" onmouseout="this.className='red_button';"
+                            id="onlyCheck">
+                            保存(查重)</button>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="blue_button" onmousemove="this.className='green_button';" onmouseout="this.className='blue_button';"
                             id="watch">
@@ -344,6 +348,10 @@
                 $("#fphm").keyup();
                 $('#fphm').blur();
                 $("#kprq").val(strs[5]);
+                //有些电子发票,二维码信息的开票日期是详细时间格式,yy-mm-dd hh-mm-ss,需要处理.
+                if (strs[5].length > 8) {
+                    $("#kprq").val(strs[5].slice(0, 10).replace(/\-/g, ''));
+                }
                 $("#kprq").keyup();
                 $("#kprq").blur();
                 if (strs[1] == "01") {
@@ -589,6 +597,28 @@
             script.src = url;
             document.body.appendChild(script);
         }
+
+        Date.prototype.format = function (fmt) {
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份 
+                "d+": this.getDate(),                    //日 
+                "h+": this.getHours(),                   //小时 
+                "m+": this.getMinutes(),                 //分 
+                "s+": this.getSeconds(),                 //秒 
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                "S": this.getMilliseconds()             //毫秒 
+            };
+            if (/(y+)/.test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(fmt)) {
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                }
+            }
+            return fmt;
+        }
+
         //自定义功能
         function bb(obj) {
             var str;
@@ -729,7 +759,7 @@
                     InvoiceSubInfo.SpecificationModel = hw[1];
                     InvoiceSubInfo.Unit = hw[2];
                     InvoiceSubInfo.Quantity = getzeroDot(hw[3]);
-                    if(fplx=="10"){
+                    if (fplx == "10") {
                         InvoiceSubInfo.Quantity = getzeroDot(hw[6]);
                     }
                     InvoiceSubInfo.UnitPrice = GetJeToDot(hw[4].trim());
@@ -754,11 +784,13 @@
 
                 var checkTime = "";
 
-                if (fplx == '10') {
-                    checkTime = fpxx[20];
-                } else {
-                    checkTime = fpxx[21];
-                }
+                //if (fplx == '10') {
+                //    checkTime = fpxx[20];
+                //} else {
+                //    checkTime = fpxx[21];
+                //}
+
+                checkTime = (new Date()).format("yyyy-MM-dd hh:mm:ss");
 
                 var postData = {
                     InvoiceProvince: fpxx[2],
@@ -787,10 +819,11 @@
                 };
                 $.ajax({
                     type: "POST",
-                    url: "Verification.aspx?r="+Math.random(),
+                    url: "taxOperateHandler.ashx?method=checkMethod",
                     timeout: 900000, //超时时间设置，单位毫秒
                     //contentType: "application/json", //这个一定要加上哟！
                     dataType: "text",
+                    cache: false,
                     data: { pData: postData },
                     success: function (jsondata) {
                         var json = eval("(" + jsondata + ")");
@@ -805,7 +838,7 @@
                             //jAlert('出错!', json.inf);
                         }
                     },
-                    fail: function (data) {
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
                         clearInfo();
                         divFadeAlert('异常出错！', "2");
                         //jAlert('出错!', data);
@@ -816,6 +849,50 @@
 
         $("#watch").click(function () {
             window.open('review.aspx');
+        });
+
+        //仅查重按钮功能
+        $("#onlyCheck").click(function () {
+            var fpdm = $("#fpdm").val().trim();
+            var fphm = $("#fphm").val().trim();
+            var kprq = $("#kprq").val().trim();
+            if (fpdm == "" || fphm == "" || kprq == "") {
+                jAlert("请完善发票信息!", "提示");
+            } else {
+                var date = (new Date()).format("yyyy-MM-dd hh:mm:ss");
+                var matchInfo = {
+                    'fpdm': fpdm,
+                    'fphm': fphm,
+                    'kprq': kprq,
+                    'operateTime': date
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "taxOperateHandler.ashx?method=matchMethod",
+                    timeout: 900000, //超时时间设置，单位毫秒
+                    //contentType: "application/json", //这个一定要加上哟！
+                    dataType: "text",
+                    data: { pData: matchInfo },
+                    success: function (jsondata) {
+                        var json = eval("(" + jsondata + ")");
+                        if (json.success == 'true') {
+                            clearInfo();
+                            divFadeAlert(json.inf, "1");
+                            //jAlert('成功!', json.inf);
+                        }
+                        if (json.success == 'false') {
+                            clearInfo();
+                            divFadeAlert(json.inf, "2");
+                            //jAlert('出错!', json.inf);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        clearInfo();
+                        divFadeAlert('异常出错！', "2");
+                        //jAlert('出错!', data);
+                    }
+                });
+            }
         });
 
         $("#checkfp").click(function () {

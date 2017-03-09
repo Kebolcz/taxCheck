@@ -102,6 +102,9 @@
     <Compile Include="review.aspx.designer.cs">
       <DependentUpon>review.aspx</DependentUpon>
     </Compile>
+    <Compile Include="taxOperateHandler.ashx.cs">
+      <DependentUpon>taxOperateHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Verification.aspx.cs">
       <DependentUpon>Verification.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -115,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\taxConfig.pubxml" />
+    <Content Include="taxOperateHandler.ashx" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

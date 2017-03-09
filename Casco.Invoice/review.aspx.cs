@@ -237,7 +237,8 @@ namespace Casco.Invoice
                 //GridView1.DataSource = CheckStatBll.getCheckStatByCondition(materialType, depotId, depotType, goodsName);
                 string operatorID = Request.LogonUserIdentity.Name;
                 DataSet ds = DataOperate.exportInvoiceInfo(invoiceType, startDate, endDate, operatorID);
-                GridView1.DataSource = ds.Tables[0];
+                DataSet ds1 = DataOperate.queryInvoiceInfo(invoiceType, startDate, endDate, operatorID);
+                GridView1.DataSource = ds1.Tables[0];
                 GridView1.DataKeyNames = new string[] { "InvoiceCode", "InvoiceNumber" };//主键
                 GridView1.DataBind();
                 GridView2.DataSource = ds.Tables[1];

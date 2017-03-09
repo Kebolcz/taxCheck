@@ -129,7 +129,7 @@
                     <asp:BoundField DataField="TotalTax" HeaderText="税额" />
                     <asp:BoundField DataField="OperatorID" HeaderText="操作人ID" />
                     <asp:BoundField DataField="InspectionTime" HeaderText="操作日期" />
-                    <asp:BoundField DataField="Disabled" HeaderText="删除Flag" />
+                    <asp:BoundField DataField="IsChecked" HeaderText="校验状态" />
                     <asp:ButtonField CommandName="Delete" HeaderText="操作" ShowHeader="True" Text="删除" />
                 </Columns>
                 <PagerTemplate>
@@ -178,7 +178,6 @@
                     <asp:BoundField DataField="Money" HeaderText="金额" />
                     <asp:BoundField DataField="TaxRate" HeaderText="税率" />
                     <asp:BoundField DataField="Tax" HeaderText="税额" />
-                    <asp:BoundField DataField="Disabled" HeaderText="删除Flag" />
                 </Columns>
                 <FooterStyle BackColor="White" ForeColor="#000066" />
                 <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
