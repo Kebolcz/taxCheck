@@ -14,7 +14,7 @@
     <link type="text/css" rel="stylesheet" href="Scripts/bootstrap-datetimepicker.min.css" />
     <script language="javascript">
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/common.css?" + Math.random() + "' />");
-        document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/jquery.alerts.css?" + Math.random() + "' media='screen' />");
+        //document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/jquery.alerts.css?" + Math.random() + "' media='screen' />");
         //document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/bootstrap-datepicker.min.css' />");
     </script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
@@ -72,6 +72,17 @@
             background-color: #d9534f;
             border-color: #d43f3a;
         }
+        .radioBtn {
+            position:absolute;
+            top:50%;
+            left:100px;
+            margin-top:-10px;
+        }
+
+        input[type=checkbox] {
+            margin:0;
+            vertical-align:middle;
+        }
     </style>
 </head>
 <body>
@@ -89,8 +100,13 @@
             </div>
             <!--header end-->
         </div>
-        <div class="container" style="margin-top: 30px;">
-            <div class="form-inline">
+        <div class="container" style="margin-top: 15px;position:relative;">
+            <div class="radioBtn">
+                <label>
+                  <input type="checkbox" id="posCBBtn" > 精确查询
+                </label>
+            </div>
+            <div class="form-inline search1">
                 <asp:DropDownList ID="DropDownList1" runat="server" CssClass="form-control">
                     <asp:ListItem Selected="True" Value="0">所有</asp:ListItem>
                     <asp:ListItem Value="01">专票</asp:ListItem>
@@ -107,8 +123,19 @@
                 <asp:Button ID="search" runat="server" Text="查询" CssClass="btn btn-primary" OnClick="search_Click" />
                 <asp:Button ID="export" runat="server" Text="导出" CssClass="btn btn-info" OnClick="export_Click" />
             </div>
+            <div class="form-inline search2" style="display:none;">
+                <div class="form-group">
+                    <label for="djsys">业务单号:    </label>
+                    <asp:TextBox CssClass="form-control" ID="djsys" name="djsys" runat="server"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="invoiceNum">发票号码:    </label>
+                    <asp:TextBox CssClass="form-control" ID="invoiceNum" name="invoiceNum" runat="server"></asp:TextBox>
+                </div>
+                <asp:Button ID="positioning" runat="server" Text="精确查询" CssClass="btn btn-success" OnClick="positioning_Click" />
+            </div>
         </div>
-        <div class="container" id="grid" style="margin-top: 50px;">
+        <div class="container" id="grid" style="margin-top: 25px;">
 
             <%--<div>--%>
             <asp:GridView ID="GridView1" runat="server" AllowPaging="True" OnPageIndexChanging="GridView1_PageIndexChanging" CssClass="table table-condensed table-bordered" AutoGenerateColumns="False" CellPadding="4" EnableModelValidation="True" ForeColor="#333333" GridLines="None" OnRowDeleting="GridView1_RowDeleting" OnRowDataBound="GridView1_RowDataBound">
@@ -309,6 +336,16 @@
             if ($("#startDate").val() != "" && $("#endDate").val() != "" && $("#endDate").val() < $("#startDate").val()) {
                 alert("查询结束时间不能早于起始时间!");
                 $("#endDate").val(nowDate());
+            }
+        });
+
+        $("#posCBBtn").on("click", function () {
+            if (this.checked) {
+                $(".search1").hide();
+                $(".search2").show();
+            } else {
+                $(".search2").hide();
+                $(".search1").show();
             }
         });
     </script>

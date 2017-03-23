@@ -43,6 +43,31 @@ namespace Casco.Invoice
             }
         }
 
+
+        protected void positioning_Click(object sender, EventArgs e)
+        {
+            //业务单号
+            string djsys = this.djsys.Text;
+            //发票号码
+            string invoiceNum = this.invoiceNum.Text;
+            string operatorID = Request.LogonUserIdentity.Name;
+            if ((djsys != "" || invoiceNum != "") && operatorID != "")
+            {
+                DataSet ds = DataOperate.positioningInvoiceInfo(djsys, invoiceNum, operatorID);
+                GridView1.DataSource = ds.Tables[0];
+                GridView1.DataKeyNames = new string[] { "InvoiceCode", "InvoiceNumber" };//主键
+                GridView1.DataBind();
+                if (!(ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0))
+                {
+                    Response.Write("<script language=javascript>alert('数据库查无此记录！');</script>");
+                }
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('请至少输入一个精确查询条件！');</script>");
+            }
+        }
+
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             //GridView1.PageIndex = e.NewPageIndex;

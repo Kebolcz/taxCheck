@@ -99,6 +99,30 @@ namespace Casco.Invoice
         }
 
         /// <summary>
+        /// 精确查询发票信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataSet positioningInvoiceInfo(String djsys, String invoiceNum, String operatorID)
+        {
+            DataSet ds = null;
+            try
+            {
+                string strSql = "SELECT DISTINCT a.InvoiceType,a.InvoiceCode,a.InvoiceNumber,a.Djsys,replace(replace(replace(a.InvoiceDate,'年','-'),'月','-'),'日','') as InvoiceDate,a.GIdentificationCode,a.GName,a.XIdentificationCode,a.XName,a.TotalPriceS,b.Total,b.TotalTax,a.OperatorID,a.InspectionTime, CASE a.NotCheck WHEN 1 THEN '未校验' ELSE '' END AS IsChecked " +
+                    "FROM [CascoInvoice ].[dbo].[B_InvoiceInfo] a(nolock) left join [CascoInvoice ].[dbo].[B_InvoiceSubInfo] b on a.InvoiceNumber = b.InvoiceNumber WHERE a.Djsys like '%"
+                    + djsys + "%' and a.[InvoiceNumber] like '%" + invoiceNum + "%' and a.OperatorID = '" + operatorID + "' and a.Disabled is null order by InspectionTime";
+
+                ds = Maticsoft.DBUtility.DbHelperSQL.Query(strSql);
+
+                return ds;
+            }
+            catch (Exception)
+            {
+                ds = null;
+            }
+            return ds;
+        }
+
+        /// <summary>
         /// 导出发票信息,使用到的方法
         /// 未校验的发票不予导出.
         /// </summary>
