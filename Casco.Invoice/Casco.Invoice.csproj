@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="images\close.png" />
+    <Content Include="images\code.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\favicon.ico" />
     <Content Include="NoAuth.html" />

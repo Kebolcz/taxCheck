@@ -196,7 +196,19 @@ namespace Casco.Invoice
                                 DataSet ds = DataOperate.JudgeInvoiceInfo(info);
                                 if (ds != null && ds.Tables[0].Rows.Count > 0)
                                 {
-                                    json = "{success:'false',inf:'发票重复'}";
+                                    json += "{success:'false',inf:'发票重复',plus:'";
+
+                                    DataView dv = ds.Tables[0].DefaultView;
+                                    foreach (DataRowView rowview in dv)
+                                    {
+                                        for (int i = 0; i < dv.Table.Columns.Count; i++)
+                                        {
+                                            json += rowview[i] + ",";
+                                        }
+                                    }
+                                    json = json.Remove(json.Length - 1, 1);
+                                    json += "'}";
+                                    json = json.Replace("\\", " ");
                                 }
                                 else
                                 {
@@ -274,7 +286,19 @@ namespace Casco.Invoice
                                 DataSet ds = DataOperate.JudgeIsMatch(fpdm, fphm, kprq);
                                 if (ds != null && ds.Tables[0].Rows.Count > 0)
                                 {
-                                    json = "{success:'false',inf:'发票重复'}";
+                                    json += "{success:'false',inf:'发票重复',plus:'";
+
+                                    DataView dv = ds.Tables[0].DefaultView;
+                                    foreach (DataRowView rowview in dv)
+                                    {
+                                        for (int i = 0; i < dv.Table.Columns.Count; i++)
+                                        {
+                                            json += rowview[i] + ",";
+                                        }
+                                    }
+                                    json = json.Remove(json.Length - 1, 1);
+                                    json += "'}";
+                                    json = json.Replace("\\", " ");
                                 }
                                 else
                                 {

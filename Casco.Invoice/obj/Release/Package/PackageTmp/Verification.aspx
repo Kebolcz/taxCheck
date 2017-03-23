@@ -13,6 +13,8 @@
     <meta name="format-detection" content="telephone=no">
     <meta property="wb:webmaster" content="" />
     <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.ico" />
+    <%--<script charset="utf-8" type="text/javascript" src="Scripts/modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="Scripts/bootstrap.min.css" />--%>
     <script language="javascript">
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/common.css?" + Math.random() + "' />");
         document.write("<l" + "ink rel='stylesheet' type='text/css' href='https://inv-veri.chinatax.gov.cn/css/jquery.alerts.css?" + Math.random() + "' media='screen' />");
@@ -167,12 +169,154 @@
                 opacity: 0.6;
             }
         }
+
+        #duplicateInfo {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            margin-left: -340px;
+            z-index: 999;
+            display:none;
+        }
+
+        #duplicateInfo .delete {
+            display: inline-block;
+            height: 25px;
+            width: 25px;
+            position: absolute;
+            right: 5px;
+            top: 0;
+            background: url('./images/close.png') no-repeat center center;
+            background-size: 25px;
+            z-index: 100;
+        }
+
+        #duplicateInfo caption {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff0000;
+        }
+
+        #duplicateInfo table {
+            width: 680px;
+            text-align: center;
+            border-collapse: collapse;
+            background-color: #FFFFFF;
+            margin: 0 auto;
+        }
+
+        #duplicateInfo tbody {
+            background-color: #ccc;
+        }
+
+        #duplicateInfo thead {
+            /*font-weight: 700;*/
+            font-size: 18px;
+            color: #FFFFFF;
+            background-color: #333333;
+        }
+
+        #duplicateInfo th,#duplicateInfo td {
+            padding: 5px 10px;
+            border-top: none;
+            border-right: 1px solid #888888;
+            border-bottom: 1px solid #888888;
+            border-left: none;
+            vertical-align: middle;
+        }
+
+        #duplicateInfo thead th:first-child {
+            border-top-left-radius: 10px;
+        }
+
+        #duplicateInfo thead th:last-child {
+            border-top-right-radius: 10px;
+            border-right: none;
+        }
+
+        #duplicateInfo tbody tr td:last-child {
+            border-right: none;
+        }
+
+        #duplicateInfo tfoot tr td {
+            border-bottom: none;
+            border-right: none;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background-color: #333333;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body onload="arw();">
     <%--aJax请求mask遮罩--%>
     <div id="ajaxloader" style="display: block;">
-        <div id="loading" style="border-right: 0px;display:none;"></div>
+        <div id="loading" style="border-right: 0px; display: none;"></div>
+    </div>
+
+    <div id="duplicateInfo">
+        <span class="delete"></span>
+        <table>
+            <caption>发票重复,重复信息如下</caption>
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>value</th>
+                </tr>
+            </thead>
+            <tbody class="dupBody">
+                <tr>
+                    <td>开票省份</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>业务单号</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>发票类型代码</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>发票代码</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>发票号码</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>开票日期</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>购买方</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>销售方</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>操作时间</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>操作人</td>
+                    <td>NULL</td>
+                </tr>
+                <tr>
+                    <td>未校验</td>
+                    <td>NULL</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">发票类型代码:00表示未校验的发票。</td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 
     <div id="top">
@@ -346,6 +490,8 @@
         </table>
         <!--右侧-->
     </div>
+
+
     <div id="foot">
     </div>
     <div id="cover">
@@ -417,8 +563,8 @@
             document.getElementById("cover").style.width = cover_width + "px";
             document.getElementById("cover").style.height = cover_height + "px";
 
-            $("#top").load("top.html?" + Math.random());
-            $("#foot").load("footer.html?" + Math.random());
+            //$("#top").load("top.html?" + Math.random());
+            //$("#foot").load("footer.html?" + Math.random());
 
             if (browser == 'ie8') {
                 sessionStorage["browser"] = "ie8";
@@ -971,6 +1117,21 @@
                         if (json.success == 'false') {
                             clearInfo();
                             divFadeAlert(json.inf, "2");
+                            if (json.plus) {
+                                var arr = json.plus.split(',');
+                                $('.dupBody tr').eq(0).find('td').eq(1).text(arr[1]);
+                                $('.dupBody tr').eq(1).find('td').eq(1).text(arr[2]);
+                                $('.dupBody tr').eq(2).find('td').eq(1).text(arr[3]);
+                                $('.dupBody tr').eq(3).find('td').eq(1).text(arr[4]);
+                                $('.dupBody tr').eq(4).find('td').eq(1).text(arr[5]);
+                                $('.dupBody tr').eq(5).find('td').eq(1).text(arr[6]);
+                                $('.dupBody tr').eq(6).find('td').eq(1).text(arr[9]);
+                                $('.dupBody tr').eq(7).find('td').eq(1).text(arr[16]);
+                                $('.dupBody tr').eq(8).find('td').eq(1).text(arr[21]);
+                                $('.dupBody tr').eq(9).find('td').eq(1).text(arr[22]);
+                                $('.dupBody tr').eq(10).find('td').eq(1).text(arr[23]);
+                                $('#duplicateInfo').show();
+                            }
                             //jAlert('出错!', json.inf);
                         }
                     },
@@ -993,6 +1154,11 @@
             var fpdm = $("#fpdm").val().trim();
             var fphm = $("#fphm").val().trim();
             var kprq = $("#kprq").val().trim();
+            //业务单号必填校验
+            if ($.trim($("#djsys").val()) == '') {
+                jAlert("业务单号为必填项!", "提示");
+                return;
+            }
             if (fpdm == "" || fphm == "" || kprq == "") {
                 jAlert("请完善发票信息!", "提示");
             } else {
@@ -1022,6 +1188,21 @@
                         if (json.success == 'false') {
                             clearInfo();
                             divFadeAlert(json.inf, "2");
+                            if (json.plus) {
+                                var arr = json.plus.split(',');
+                                $('.dupBody tr').eq(0).find('td').eq(1).text(arr[1]);
+                                $('.dupBody tr').eq(1).find('td').eq(1).text(arr[2]);
+                                $('.dupBody tr').eq(2).find('td').eq(1).text(arr[3]);
+                                $('.dupBody tr').eq(3).find('td').eq(1).text(arr[4]);
+                                $('.dupBody tr').eq(4).find('td').eq(1).text(arr[5]);
+                                $('.dupBody tr').eq(5).find('td').eq(1).text(arr[6]);
+                                $('.dupBody tr').eq(6).find('td').eq(1).text(arr[9]);
+                                $('.dupBody tr').eq(7).find('td').eq(1).text(arr[16]);
+                                $('.dupBody tr').eq(8).find('td').eq(1).text(arr[21]);
+                                $('.dupBody tr').eq(9).find('td').eq(1).text(arr[22]);
+                                $('.dupBody tr').eq(10).find('td').eq(1).text(arr[23]);
+                                $('#duplicateInfo').show();
+                            }
                             //jAlert('出错!', json.inf);
                         }
                     },
@@ -1035,10 +1216,19 @@
             }
         });
 
+        $('.delete').click(function () {
+            $('#duplicateInfo').hide();
+        });
+
         $("#checkfp").click(function () {
             var fpdm = $("#fpdm").val().trim();
             var fphm = $("#fphm").val().trim();
             var kprq = $("#kprq").val().trim();
+            //业务单号必填校验
+            if ($.trim($("#djsys").val()) == '') {
+                jAlert("业务单号为必填项!", "提示");
+                return;
+            }
             var dmchek = getSwjg(fpdm, 1);
             if (dmchek.length > 0) {
                 var DATE_FORMAT = /^[0-9]{4}[0-1]?[0-9]{1}[0-3]?[0-9]{1}$/;
@@ -1218,6 +1408,13 @@
                                     jAlert("验证码失效!", "提示",
                             function (r) {
                                 if (r) {
+                                    var fpdm = $("#fpdm").val().trim();
+                                    //var fphm = $("#fphm").val().trim();
+                                    if (fpdm == "") { //&& fphm == "") {
+                                        jAlert('请先输入发票代码!', '提示');
+                                    } else {
+                                        getYzmXx();
+                                    }
                                 }
                             });
                                 } else if (cyjgdm == "008") {
@@ -1225,6 +1422,13 @@
                                     jAlert("验证码错误!", "提示",
                             function (r) {
                                 if (r) {
+                                    var fpdm = $("#fpdm").val().trim();
+                                    //var fphm = $("#fphm").val().trim();
+                                    if (fpdm == "") { //&& fphm == "") {
+                                        jAlert('请先输入发票代码!', '提示');
+                                    } else {
+                                        getYzmXx();
+                                    }
                                 }
                             });
                                 } else if (cyjgdm == "009") {
