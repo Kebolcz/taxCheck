@@ -1398,6 +1398,19 @@
                                         'cysj': yzmSj,
                                         'setText': setText
                                     };
+                                    var args = {
+                                        'fpdm': fpdm,
+                                        'msg': '数据不一致'
+                                    };
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "taxOperateHandler.ashx?method=netLog",
+                                        timeout: 900000, //超时时间设置，单位毫秒
+                                        dataType: "text",
+                                        cache: false,
+                                        data: { pData: args },
+                                        success: function (jsondata) { }
+                                    });
                                     if (browser == "edge" || browser == "firefox") {
                                         // show_dialog(700, 400, "jgbyz.html", param);
                                     } else { //ie8无问题
@@ -1445,6 +1458,19 @@
                                         'cysj': yzmSj,
                                         'setText': setText
                                     };
+                                    var args = {
+                                        'fpdm': fpdm,
+                                        'msg': '查无此票'
+                                    };
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "taxOperateHandler.ashx?method=netLog",
+                                        timeout: 900000, //超时时间设置，单位毫秒
+                                        dataType: "text",
+                                        cache: false,
+                                        data: { pData: args },
+                                        success: function (jsondata) { }
+                                    });
                                     if (browser == "edge" || browser == "firefox") {
                                         //show_dialog(700, 400, "jgbyz.html", param);
                                     } else { //ie8无问题

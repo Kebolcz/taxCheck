@@ -16,6 +16,7 @@ namespace Casco.Invoice
         {
 
             string json = "";
+            string operatorID = context.Request.LogonUserIdentity.Name;
             if (context.Request["method"] != null)
             {
                 try
@@ -198,6 +199,7 @@ namespace Casco.Invoice
                                 {
                                     json += "{success:'false',inf:'发票重复',plus:'";
 
+                                    NetLog.WriteTextLog(operatorID, "【查验发票】", "【发票重复】："+ info.InvoiceNumber);
                                     DataView dv = ds.Tables[0].DefaultView;
                                     foreach (DataRowView rowview in dv)
                                     {
@@ -287,6 +289,7 @@ namespace Casco.Invoice
                                 if (ds != null && ds.Tables[0].Rows.Count > 0)
                                 {
                                     json += "{success:'false',inf:'发票重复',plus:'";
+                                    NetLog.WriteTextLog(operatorID, "【查验发票】", "【发票重复】：" + fphm);
 
                                     DataView dv = ds.Tables[0].DefaultView;
                                     foreach (DataRowView rowview in dv)
@@ -318,6 +321,10 @@ namespace Casco.Invoice
 
                             }
 
+                            break;
+
+                        case "netLog":
+                            NetLog.WriteTextLog(operatorID, "【查验发票】", "【"+ context.Request.Form["pData[msg]"] + "】：" + context.Request.Form["pData[fpdm]"]);
                             break;
                     }
                 }

@@ -197,6 +197,8 @@
                     <asp:BoundField DataField="InvoiceType" HeaderText="发票类型" />
                     <asp:BoundField DataField="InvoiceCode" HeaderText="发票代码" />
                     <asp:BoundField DataField="InvoiceNumber" HeaderText="发票号码" />
+                    <asp:BoundField DataField="GName" HeaderText="购买方名称" />
+                    <asp:BoundField DataField="XName" HeaderText="销售方名称" />
                     <asp:BoundField DataField="GoodsName" HeaderText="类目名称" />
                     <asp:BoundField DataField="SpecificationModel" HeaderText="类目规格" />
                     <asp:BoundField DataField="Unit" HeaderText="单位" />

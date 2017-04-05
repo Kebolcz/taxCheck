@@ -94,6 +94,7 @@
     <Compile Include="Code\DataModel.cs" />
     <Compile Include="Code\DataOperate.cs" />
     <Compile Include="Code\DbHelperSQL.cs" />
+    <Compile Include="Code\NetLog.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>

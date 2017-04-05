@@ -15,6 +15,7 @@ namespace Casco.Invoice
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            string operatorID = Request.LogonUserIdentity.Name;
             if (!IsPostBack)
             {
                 string result = "";
@@ -30,6 +31,7 @@ namespace Casco.Invoice
                         }
                         else
                         {
+                            NetLog.WriteTextLog(operatorID, "【登录平台】", "【查无登录权限】");
                             result = "<script language=javascript>alert('查无权限!');window.location='./NoAuth.html';</script>";
                             Response.Write(result);
                             Response.End();
